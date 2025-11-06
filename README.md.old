@@ -1,0 +1,173 @@
+# ONOS Learning Bridge with Connection Limiting# ONOS Learning Bridge with Connection Limiting# 
+
+
+
+A Software-Defined Networking (SDN) application built on ONOS that implements an intelligent learning bridge with TCP connection limiting and statistics logging.
+
+
+
+## FeaturesA learning bridge application for ONOS SDN controller that limits TCP connections per host and logs connection statistics. A Software-Defined Networking (SDN) application built on ONOS that implements an intelligent learning bridge with connection limiting and TCP statistics logging.
+
+
+
+- MAC address learning (switch-port learning)
+
+- Connection limiting: maximum concurrent TCP connections per host (default: 2)
+
+- TCP statistics logging to /tmp/tcp_connections.log## Features## Features
+
+- Flow rule management with 30-second timeout
+
+
+
+## Requirements (auto-installed in Dev Container)
+
+- 🔄 **MAC Address Learning**: Automatically learns MAC addresses and their switch ports- 🔄 **MAC Address Learning**: Automatically learns MAC addresses and their associated switch ports
+
+- Java 11 LTS
+
+- Maven 3.6+- 🚦 **Connection Limiting**: Limits simultaneous  connections per host (default: 2)- 🚦 **Connection Limiting**: Enforces a maximum number of simultaneous connections per host
+
+- ONOS 2.7.0
+
+- Mininet + Open vSwitch- 📊 **Statistics Logging**: Records packet count and duration for each TCP connection- 📊 **Statistics Logging**: Tracks and logs packet count and duration for each TCP connection
+
+- Works on x86_64 and ARM64
+# ONOS Learning Bridge (Student Edition)
+
+Minimal ONOS application that implements a learning bridge with:
+* MAC address learning
+* TCP connection limiting (default: 2 per host)
+* Connection statistics logging to `/tmp/tcp_connections.log`
+
+## Why Simplified?
+Automation was removed to avoid controller startup edge cases. Students now build and deploy manually to understand each step of the SDN workflow.
+
+## Prerequisites (already baked into the dev container)
+* Java 11
+* Maven 3.x
+* ONOS 2.7.0 at `/opt/onos`
+* Mininet + Open vSwitch
+
+## 1. Build
+```bash
+cd /workspaces/OpenFlow
+./build.sh          # or use: mvn clean package -DskipTests
+```
+Jar: `target/learning-bridge-1.0-SNAPSHOT.jar`
+
+## 2. Start ONOS
+```bash
+cd /opt/onos
+./bin/onos-service start
+```
+
+## 3. Install & Activate
+
+Create CLI helper (one-time):
+```bash
+cat > /usr/local/bin/onos-cli << 'EOF'
+#!/bin/bash
+ssh -o "HostKeyAlgorithms=+ssh-rsa" \
+    -o "PubkeyAcceptedAlgorithms=+ssh-rsa" \
+    -o "StrictHostKeyChecking=no" \
+    -o "UserKnownHostsFile=/dev/null" \
+    -p 8101 onos@localhost "$@"
+EOF
+chmod +x /usr/local/bin/onos-cli
+```
+
+Then install (choose method A, recommended):
+```text
+A) Karaf bundle (offline, recommended):
+   onos-cli                                 # password: rocks
+   onos> bundle:install -s file:/workspaces/OpenFlow/target/learning-bridge-1.0-SNAPSHOT.jar
+   onos> bundle:list | grep learning
+
+B) App subsystem:
+   onos> app install /workspaces/OpenFlow/target/learning-bridge-1.0-SNAPSHOT.jar
+   onos> app activate org.onosproject.learningbridge
+   (If it tries to reach remote registry, fall back to method A.)
+```
+
+Activate helper services (only once per fresh controller):
+```text
+onos> app activate org.onosproject.openflow
+onos> app activate org.onosproject.hostprovider
+onos> app activate org.onosproject.lldpprovider
+onos> app activate org.onosproject.fwd
+```
+
+## 4. Run Mininet
+```bash
+cd /workspaces/OpenFlow
+sudo python3 test_topology.py    # auto-starts OVS if needed
+```
+Example tests in Mininet CLI:
+```bash
+mininet> pingall
+mininet> h1 python3 -m http.server 8000 &
+mininet> h2 curl http://10.0.0.1:8000
+```
+Start more client connections to hit the limit.
+
+## 5. Observe
+```bash
+tail -f /opt/onos/apache-karaf-*/data/log/karaf.log | grep LearningBridge
+tail -f /tmp/tcp_connections.log
+```
+
+## Adjust Behaviour
+Edit constants inside `src/main/java/org/onosproject/learningbridge/LearningBridgeApp.java`:
+```java
+private static final int MAX_CONNECTIONS_PER_HOST = 2;
+private static final int FLOW_TIMEOUT = 30; // seconds
+private static final String LOG_FILE_PATH = "/tmp/tcp_connections.log";
+```
+Rebuild and reinstall after changes.
+
+## Common ONOS CLI Commands
+```text
+onos-cli                # open CLI (password: rocks)
+apps -s -a              # list apps
+flows                   # view flow rules
+hosts                   # discovered hosts
+devices                 # switches
+log:set DEBUG org.onosproject.learningbridge
+```
+
+## Troubleshooting
+| Issue | Fix |
+|-------|-----|
+| SSH "no matching host key" | Create onos-cli wrapper (see section 3) |
+| `database connection failed` (OVS) | `sudo service openvswitch-switch start` |
+| `openvswitch module not found` | **Normal in Docker** - ignore, userspace OVS works |
+| `Error setting resource limits` | **Normal in containers** - ignore, doesn't affect functionality |
+| App not visible | Use bundle:install method (A) |
+| Mininet can't ping | Activate OpenFlow + hostprovider apps |
+| Log empty | Generate traffic (HTTP, ping, iperf) |
+| Old logic running | Rebuild, reinstall (uninstall bundle if needed) |
+
+## Project Layout
+```
+workspaces/OpenFlow
+├── pom.xml
+├── build.sh                  # Build script (run after each code change)
+├── src/main/java/org/onosproject/learningbridge/LearningBridgeApp.java
+├── src/main/resources/app.xml
+├── test_topology.py
+├── GETTING_STARTED.md        # Start here!
+├── ONOS_DEVELOPMENT_GUIDE.md
+├── QUICK_REFERENCE.md
+└── README.md
+```
+
+## License / Course
+Educational use (CGR – FCT NOVA, 2024/2025).
+
+## Next Steps
+Add new learning behaviours, metrics, or enforcement policies. Rebuild, redeploy, test. Iterate quickly.
+
+---
+Updated: Nov 2025
+

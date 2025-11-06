@@ -1,0 +1,10 @@
+<app name="org.onosproject.learningbridge"
+     title="Learning Bridge"
+     version="1.0-SNAPSHOT"
+     category="Education"
+     description="Learning bridge with TCP connection limiting and statistics logging"
+     url="https://example.edu/cgr"
+     origin="CGR Course"
+     featuresRepo=""
+     features="">
+</app>

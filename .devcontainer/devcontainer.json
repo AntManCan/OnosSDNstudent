@@ -1,0 +1,44 @@
+{
+  "name": "ONOS Development (Use Mininet in VM)",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  "remoteUser": "root",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.java",
+        "ms-python.python",
+        "vscjava.vscode-maven"
+      ],
+      "settings": {
+        "java.configuration.updateBuildConfiguration": "automatic"
+      }
+    }
+  },
+  "runArgs": [
+    "-p","6653:6653",
+    "-p","8101:8101",
+    "-p","8181:8181"
+  ],
+  "forwardPorts": [6653, 8101, 8181],
+  "portsAttributes": {
+    "6653": {
+      "label": "ONOS OpenFlow",
+      "onAutoForward": "notify"
+    },
+    "8101": {
+      "label": "ONOS Karaf CLI (SSH)",
+      "onAutoForward": "silent"
+    },
+    "8181": {
+      "label": "ONOS Web UI",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh"
+}
