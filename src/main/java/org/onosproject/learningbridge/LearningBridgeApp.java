@@ -6,15 +6,10 @@ import org.onlab.packet.MacAddress;
 import org.onlab.packet.TCP;
 import org.onosproject.core.ApplicationId;
 import org.onosproject.core.CoreService;
-import org.onosproject.net.ConnectPoint;
 import org.onosproject.net.DeviceId;
-import org.onosproject.net.Host;
-import org.onosproject.net.HostId;
 import org.onosproject.net.PortNumber;
-import org.onosproject.net.flow.DefaultFlowRule;
 import org.onosproject.net.flow.DefaultTrafficSelector;
 import org.onosproject.net.flow.DefaultTrafficTreatment;
-import org.onosproject.net.flow.FlowRule;
 import org.onosproject.net.flow.FlowRuleService;
 import org.onosproject.net.flow.TrafficSelector;
 import org.onosproject.net.flow.TrafficTreatment;
@@ -41,7 +36,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -309,8 +303,10 @@ public class LearningBridgeApp {
      * Represents a unique TCP connection.
      */
     private static class ConnectionKey {
-        final MacAddress srcMac;
-        final MacAddress dstMac;
+    @SuppressWarnings("unused")
+    final MacAddress srcMac;
+    @SuppressWarnings("unused")
+    final MacAddress dstMac;
         final int srcIp;
         final int dstIp;
         final int srcPort;
