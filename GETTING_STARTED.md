@@ -107,14 +107,11 @@ Ports should auto-forward. Add manually if missing.
 
 ### Step 8: Set Up VM
 
-**Option A:** Download [Official Mininet VM](http://mininet.org/download/) if you have X86 machine
-
-**Option B:** Download the course VM with mininet from 
+**Download:** Download the course VM with mininet from 
 https://tele1.dee.fct.unl.pt/cgr. in the link shared in the laboratories page, 
 
 **Network Config** (VirtualBox):
-- **Bridged Adapter**: VM on LAN (use host's LAN IP, e.g., 192.168.1.100)
-- **Host-Only Adapter**: VM isolated (use 192.168.56.1)
+- **NAT Network**: VM can reach HOST in its IP address. 
 
 **Find your host IP:**
 ```bash

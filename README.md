@@ -12,7 +12,7 @@ A Software-Defined Networking (SDN) application for ONOS that implements MAC add
 
 - 🔄 **MAC Address Learning**: Automatically learns MAC addresses and their associated switch ports
 
-- 🚦 **Connection Limiting**: Enforces a maximum number of simultaneous TCP connections per host (default: 2)
+- 🚦 **Connection Limiting**: Enforces a maximum number of simultaneous connections per host (default: 2)
 
 - 📊 **Statistics Logging**: Tracks and logs packet count and duration for each TCP connection to `/tmp/tcp_connections.log`## FeaturesA learning bridge application for ONOS SDN controller that limits TCP connections per host and logs connection statistics. A Software-Defined Networking (SDN) application built on ONOS that implements an intelligent learning bridge with connection limiting and TCP statistics logging.
 
@@ -80,11 +80,6 @@ Output: `target/learning-bridge-1.0-SNAPSHOT.jar`* MAC address learning
 
 ### 3. Start ONOS* Connection statistics logging to `/tmp/tcp_connections.log`
 
-
-
-```bash## Why Simplified?
-
-cd /opt/onosAutomation was removed to avoid controller startup edge cases. Students now build and deploy manually to understand each step of the SDN workflow.
 
 ./bin/onos-service start
 

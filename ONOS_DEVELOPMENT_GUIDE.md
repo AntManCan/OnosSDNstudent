@@ -36,13 +36,13 @@ cd /workspaces/OpenFlow
 
 Then in a separate terminal:
 
-1) Start ONOS
+1) Start ONOS if not already running
 ```bash
 cd /opt/onos
 ./bin/onos-service start
 ```
 
-2) Open ONOS CLI (user: onos, pass: rocks)
+2) Open ONOS CLI if not already running (user: onos, pass: rocks)
 ```bash
 onos-cli
 ```
@@ -54,7 +54,7 @@ A) Reliable offline method (Karaf bundle):
    onos> apps -s -a | grep learningbridge
 ```
 
-4) Activate helpful ONOS services (once per controller reset)
+4) Activate helpful ONOS services also only if not already activated (once per controller reset)
 ```text
 onos> app activate org.onosproject.openflow
 onos> app activate org.onosproject.hostprovider
@@ -97,11 +97,11 @@ onos> app activate org.onosproject.fwd
    mininet> h2 curl http://10.0.0.1:8000       # third should be blocked
    ```
    
-   Adjust the commands as needed for your own experiments (iperf, netcat, etc.).
+   Adjust the commands as needed for your own experiments (iperf, netcat, etc.) or use the hosts terminals for other commands.
 
 4. Inspect results **in the dev container**:
    ```bash
-   # Connection statistics written by the app
+   # Connection statistics written by the app (if you maintain this file as the output)
    tail -f /tmp/tcp_connections.log
 
    # ONOS controller log filtered for your app
