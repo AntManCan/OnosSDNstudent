@@ -85,10 +85,9 @@ onos> bundle:update 200 file:/workspaces/OnosSDN/target/learning-bridge-1.0-SNAP
 onos> app activate org.onosproject.openflow
 onos> app activate org.onosproject.hostprovider
 onos> app activate org.onosproject.lldpprovider
-onos> app activate org.onosproject.fwd
 ```
 
-These enable OpenFlow, host discovery, and forwarding.
+These enable OpenFlow and host discovery forwarding will be done by our bundle.
 
 ---
 
@@ -114,7 +113,7 @@ https://tele1.dee.fct.unl.pt/cgr. in the link shared in the laboratories page,
 - **NAT Network**: VM can reach HOST in its IP address. 
 
 **Find your host IP:**
-```bash
+```bash  
 # On host machine
 ip addr    # Linux/macOS
 ipconfig   # Windows
@@ -144,23 +143,18 @@ nc -vz <HOST_IP> 6653
 ### Step 10: Start Mininet
 
 From the VM:
-
+Get the start-mininet.sh file from https://tele1.dee.fct.unl.pt/cgr_2025_2026/pages/laboratorios.html
 ```bash
-sudo mn --topo tree,2 --mac --switch ovsk,protocols=OpenFlow13 --controller remote,ip=<HOST_IP>,port=6653
+ sudo ./start-mininet.py <HOST_IP>
 ```
-
 Replace `<HOST_IP>` with your actual IP (e.g., `192.168.1.100`).
 
-You should get the `mininet>` prompt immediately.
-
-**Other topologies:**
+You should get the `mininet>` prompt (just press enter after the mininet ready prompt).
+you can open terminals for the hosrs using the commands.
 ```bash
-# Linear (2 switches, 2 hosts)
-sudo mn --topo linear,2 --mac --switch ovsk,protocols=OpenFlow13 --controller remote,ip=<HOST_IP>,port=6653
-
-# Tree (depth 2, fanout 2)
-sudo mn --topo tree,depth=2,fanout=2 --mac --switch ovsk,protocols=OpenFlow13 --controller remote,ip=<HOST_IP>,port=6653
+mininet>xterm h1
 ```
+
 
 ---
 
@@ -172,13 +166,52 @@ mininet> pingall
 # Ping specific hosts
 mininet> h1 ping h2
 
-# HTTP server test
-mininet> h1 python3 -m http.server 8000 &
-mininet> h2 curl http://10.0.0.1:8000
-mininet> h2 curl http://10.0.0.1:8000  # 2nd connection
-mininet> h2 curl http://10.0.0.1:8000  # 3rd - should be blocked!
+# In Mininet - test connection limiting
+```bash
+# Start pings in background (continuously)
+mininet> h1 ping h2 &
+mininet> h1 ping h3 &
+mininet> h1 ping h4 &  # This should fail/be blocked
+
+# Stop background pings
+mininet> jobs
+mininet> kill %1 %2 %3
 ```
 
+The `&` runs the command in background, allowing you to run more commands.
+
+#### **Test Connection Limiting (Option 3: Using xterm - Recommended)**
+
+```bash
+# Open three terminal windows for one host
+mininet> xterm h1 h1 h1
+
+# In h1's xterm window:
+h1# ping 10.0.0.2  # Ping h2 - should work
+
+# In another h1 xterm window:
+h1# ping 10.0.0.3  # Ping h3 - should work
+
+# In another h1 xterm window:
+h1# ping 10.0.0.4  # Ping h4 - should be BLOCKED
+```
+
+# Test TCP statistics
+```bash
+# Open xterm windows
+mininet> xterm h1 h2
+
+# In h2's terminal (server):
+h2# iperf -s
+
+# In h1's terminal (client):
+h1# iperf -c 10.0.0.2 -t 10  # Send TCP traffic for 10 seconds
+
+# After the flow expires (30 seconds), check logs:
+# In dev container:
+tail /tmp/tcp_connections.log
+# Should show: bytes transferred, packet count, duration
+```
 ---
 
 ### Step 12: Monitor in ONOS
