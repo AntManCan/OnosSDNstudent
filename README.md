@@ -16,11 +16,12 @@ An intelligent learning bridge that:
 
 ## 📚 Documentation Structure
 
-**Start here:** [STUDENT_GUIDE.md](STUDENT_GUIDE.md) - Complete assignment guide with 27 TODO tasks
+**Start here:**
+- [GETTING_STARTED.md](GETTING_STARTED.md) - Environment setup and first steps
 
 **Then review:**
-- [GETTING_STARTED.md](GETTING_STARTED.md) - Environment setup and first steps
-- [ONOS_DEVELOPMENT_GUIDE.md](ONOS_DEVELOPMENT_GUIDE.md) - Detailed development reference
+- [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) - Architecture, concepts, and data structures
+- [ONOS_DEVELOPMENT_GUIDE.md](ONOS_DEVELOPMENT_GUIDE.md) - Development workflows and debugging
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Command cheat sheet
 
 ---
@@ -53,37 +54,41 @@ cd /opt/onos
 ./bin/onos-service start
 ```
 
-### 5. Work Through the Assignment
+### 5. Implement the Learning Bridge
 
-Open [STUDENT_GUIDE.md](STUDENT_GUIDE.md) and follow the TODO tasks in:
+Follow the **21 TODO tasks** in:
 ```
 src/main/java/org/onosproject/learningbridge/LearningBridgeApp.java
 ```
+
+Refer to [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for architecture and concepts.
 
 ---
 
 ## 📋 Assignment Overview
 
-The code contains **27 guided TODO tasks** organized in sections:
+The starter code contains **21 TODO tasks** to implement:
 
-### Part 1: Setup (Tasks 1-5)
-- Understanding ONOS services
-- Application lifecycle management
+### Part 1: Basic Infrastructure (Tasks 1-5)
+- Data structure initialization
+- Application activation
+- Packet processor registration
 
-### Part 2: Packet Processing (Tasks 6-15)
+### Part 2: Packet Processing & Learning (Tasks 6-11)
 - MAC address learning
-- Connection limiting
+- Connection tracking
+- TCP connection detection
 - Flow rule installation
 
-### Part 3: Flow Management (Tasks 16-21)
-- Flow lifecycle handling
-- Statistics collection
-- Cleanup logic
+### Part 3: Flow Lifecycle Management (Tasks 12-17)
+- Flow removal handling
+- Connection cleanup
+- TCP statistics retrieval
 
-### Part 4: Statistics (Tasks 22-27)
-- TCP connection tracking
-- Log file management
-- Helper class implementation
+### Part 4: Helper Classes & Logging (Tasks 18-21)
+- ConnectionKey class implementation
+- TcpConnectionInfo class implementation
+- Statistics logging
 
 ---
 
@@ -193,9 +198,9 @@ tail -f /tmp/tcp_connections.log
 ## 🎓 Learning Resources
 
 ### In This Repo
-- [STUDENT_GUIDE.md](STUDENT_GUIDE.md) - **START HERE** - Complete assignment walkthrough
-- [GETTING_STARTED.md](GETTING_STARTED.md) - Environment setup guide
-- [ONOS_DEVELOPMENT_GUIDE.md](ONOS_DEVELOPMENT_GUIDE.md) - Development reference
+- [GETTING_STARTED.md](GETTING_STARTED.md) - **START HERE** - Environment setup guide
+- [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) - Architecture and implementation concepts
+- [ONOS_DEVELOPMENT_GUIDE.md](ONOS_DEVELOPMENT_GUIDE.md) - Development workflows and debugging
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Command cheat sheet
 
 ### External Resources
@@ -217,8 +222,8 @@ tail -f /tmp/tcp_connections.log
 │       │   └── LearningBridgeApp.java     # Main application (YOUR WORK HERE)
 │       └── resources/
 │           └── app.xml                     # ONOS app descriptor
-├── STUDENT_GUIDE.md                        # Assignment guide (START HERE)
-├── GETTING_STARTED.md                      # Setup guide
+├── GETTING_STARTED.md                      # Setup guide (START HERE)
+├── IMPLEMENTATION_GUIDE.md                 # Architecture and concepts
 ├── ONOS_DEVELOPMENT_GUIDE.md               # Development reference
 ├── QUICK_REFERENCE.md                      # Command cheat sheet
 └── README.md                               # This file
@@ -244,13 +249,13 @@ tail -f /tmp/tcp_connections.log
 
 Before submitting your assignment:
 
-- [ ] All 27 TODO tasks completed
-- [ ] All QUESTION/ANSWER pairs filled in
+- [ ] All 21 TODO tasks completed
 - [ ] Application builds without errors
 - [ ] MAC learning test passes (pingall works)
 - [ ] Connection limiting test passes (3rd connection blocked)
 - [ ] TCP statistics are logged correctly
 - [ ] Code is clean and well-commented
+- [ ] Understanding of architecture and design decisions
 
 ---
 
@@ -259,9 +264,9 @@ Before submitting your assignment:
 Your implementation will be evaluated on:
 
 1. **Correctness** (40%) - Does it work as specified?
-2. **Code Quality** (20%) - Is it clean and well-structured?
-3. **Understanding** (30%) - Are the questions answered correctly?
-4. **Testing** (10%) - Did you test all features?
+2. **Code Quality** (30%) - Is it clean and well-structured?
+3. **Testing** (20%) - Did you test all features?
+4. **Understanding** (10%) - Do you understand the architecture?
 
 ---
 
@@ -279,7 +284,7 @@ Educational use - CGR Course, FCT NOVA, 2024/2025
 
 ---
 
-**Ready to start?** Open [STUDENT_GUIDE.md](STUDENT_GUIDE.md) and begin your journey into SDN programming! 🚀
+**Ready to start?** Follow [GETTING_STARTED.md](GETTING_STARTED.md) to set up your environment, then implement the TODO tasks using [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) as your reference! 🚀
 
 *Last updated: November 2025*
 
